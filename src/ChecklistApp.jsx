@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const ChecklistApp = () => {
   const [checklistItems, setChecklistItems] = useState([]);
+  const [selectAll, setSelectAll] = useState(false);
   const [selectedItem, setSelectedItem] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [editedData, setEditedData] = useState("");
@@ -18,6 +19,15 @@ const ChecklistApp = () => {
   const handleRemoveItem = (id) => {
     const updatedItems = checklistItems.filter((item) => item.id !== id);
     setChecklistItems(updatedItems);
+  };
+
+  const handleSelectAll = () => {
+    const updatedItems = checklistItems.map((item) => {
+      item.selected = !selectAll;
+      return item;
+    });
+    setChecklistItems(updatedItems);
+    setSelectAll(!selectAll);
   };
 
   const handleSelectItem = (id) => {
@@ -55,6 +65,10 @@ const ChecklistApp = () => {
   return (
     <div>
       <button onClick={handleAddItem}>Add Item</button>
+      <div>
+        <input type="checkbox" checked={selectAll} onChange={handleSelectAll} />
+        Select All
+      </div>
       <ul>
         {checklistItems.map((item) => (
           <li key={item.id}>
